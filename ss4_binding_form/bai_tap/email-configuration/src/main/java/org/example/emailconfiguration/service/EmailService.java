@@ -25,7 +25,7 @@ public class EmailService implements IEmailService{
     }
 
     @Override
-    public Email findById(String id) {
+    public Email findById(int id) {
         return emailRepository.findById(id);
     }
 

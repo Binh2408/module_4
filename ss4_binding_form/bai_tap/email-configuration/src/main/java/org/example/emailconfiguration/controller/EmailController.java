@@ -32,8 +32,13 @@ public class EmailController {
         return Arrays.asList(5, 10, 15, 25, 50, 100);
     }
 
-    @GetMapping()
-    public String showForm(Model model) {
+    @GetMapping("")
+    public String showList(Model model) {
+        model.addAttribute("emails", emailService.findAll());
+        return "list";
+    }
+    @GetMapping("/add")
+    public String showCreateForm(Model model) {
         if (!model.containsAttribute("email")) {
             model.addAttribute("email", new Email());
         }
@@ -44,16 +49,12 @@ public class EmailController {
     public String submit(@ModelAttribute("email") Email email, RedirectAttributes redirectAttributes) {
         emailService.add(email);
         redirectAttributes.addFlashAttribute("emails", emailService.findAll());
-        return "redirect:/email/list";
-    }
-    @GetMapping("/list")
-    public String showList(Model model) {
-        model.addAttribute("emails", emailService.findAll());
-        return "list";
+        return "redirect:/email";
     }
 
-    @GetMapping("/{id}")
-    public ModelAndView showInformation(@PathVariable String id) {
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView showInformation(@PathVariable int id) {
         ModelAndView modelAndView = new ModelAndView("edit");
         Email email = emailService.findById(id);
         modelAndView.addObject("email",email);
@@ -64,6 +65,6 @@ public class EmailController {
     public String updateEmail(@ModelAttribute("email") Email email, RedirectAttributes redirectAttributes) {
         emailService.save(email); // cần hàm update theo id
         redirectAttributes.addFlashAttribute("emails", emailService.findAll());
-        return "redirect:/email/list";
+        return "redirect:/email";
     }
 }

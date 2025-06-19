@@ -1,6 +1,7 @@
 package org.example.emailconfiguration.model;
 
 public class Email {
+    private int id;
     private String languages;
     private int pageSize;
     private boolean spams;
@@ -9,11 +10,27 @@ public class Email {
     public Email() {
     }
 
+    public Email(int id, String languages, int pageSize, boolean spams, String signature) {
+        this.id = id;
+        this.languages = languages;
+        this.pageSize = pageSize;
+        this.spams = spams;
+        this.signature = signature;
+    }
+
     public Email(String languages, int pageSize, boolean spams, String signature) {
         this.languages = languages;
         this.pageSize = pageSize;
         this.spams = spams;
         this.signature = signature;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLanguages() {

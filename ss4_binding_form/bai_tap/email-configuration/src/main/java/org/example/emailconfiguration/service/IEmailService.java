@@ -7,6 +7,6 @@ import java.util.List;
 public interface IEmailService {
     List<Email> findAll();
     void add(Email email);
-    Email findById(String id);
+    Email findById(int id);
     void save(Email email);
 }

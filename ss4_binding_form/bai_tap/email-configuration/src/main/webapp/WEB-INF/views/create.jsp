@@ -74,7 +74,8 @@
 
 <h1>Settings</h1>
 
-<form:form action="/email/save" method="post" modelAttribute="email">
+<form:form action="/email/add" method="post" modelAttribute="email">
+    <form:hidden path="id"/>
 
     <div class="form-group">
         <label for="language">Languages</label>
@@ -106,7 +107,7 @@
 
     <div class="button-group" style="padding-left: 150px">
         <button type="submit" class="btn-update">Add</button>
-        <button type="reset" class="btn-cancel">Reset</button>
+        <button type="submit" class="btn-cancel"><a href="/email">Cancel</a></button>
     </div>
 
 </form:form>

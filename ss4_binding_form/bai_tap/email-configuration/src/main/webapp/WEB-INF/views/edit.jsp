@@ -76,6 +76,8 @@
 <h1>Edit Email Setting</h1>
 
 <form:form action="/email/update" method="post" modelAttribute="email">
+    <form:hidden path="id"/>
+
     <div class="form-group">
         <label>Language:</label>
         <form:select path="languages" items="${languageOptions}"/>
@@ -98,7 +100,7 @@
 
     <div class="form-group">
         <button type="submit">Update</button>
-        <a href="/email/list">Cancel</a>
+        <a href="/email">Cancel</a>
     </div>
 </form:form>
 

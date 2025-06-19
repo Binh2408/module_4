@@ -8,8 +8,11 @@ import java.util.List;
 @Repository
 public class EmailRepository implements IEmailRepository{
     private static final List<Email> emails = new ArrayList<>();
+    private static int currentId = 1;
     static {
-        emails.add(new Email("English",20,true,"Abc"));
+        emails.add(new Email(currentId++,"English",25,true,"Abc"));
+        emails.add(new Email(currentId++,"Vietnamese",100,true,"Abc"));
+        emails.add(new Email(currentId++,"Chinese",50,true,"Abc"));
     }
     @Override
     public List<Email> findAll() {
@@ -18,13 +21,14 @@ public class EmailRepository implements IEmailRepository{
 
     @Override
     public void add(Email email) {
+        email.setId(currentId++);
         emails.add(email);
     }
 
     @Override
-    public Email findById(String id) {
+    public Email findById(int id) {
         for (Email email: emails) {
-            if(email.getLanguages().equals(id)) {
+            if(email.getId()== id) {
                 return email;
             }
         }
@@ -33,10 +37,12 @@ public class EmailRepository implements IEmailRepository{
 
     @Override
     public void save(Email email) {
-        Email email1 = findById(email.getLanguages());
-        email1.setLanguages(email.getLanguages());
-        email1.setPageSize(email.getPageSize());
-        email1.setSpams(email.isSpams());
-        email1.setSignature(email.getSignature());
+        Email existing = findById(email.getId());
+        if (existing != null) {
+            existing.setLanguages(email.getLanguages());
+            existing.setPageSize(email.getPageSize());
+            existing.setSpams(email.isSpams());
+            existing.setSignature(email.getSignature());
+        }
     }
 }
