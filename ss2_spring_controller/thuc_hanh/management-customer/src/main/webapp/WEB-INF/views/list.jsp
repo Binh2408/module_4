@@ -30,6 +30,7 @@
     <th>Name</th>
     <th>Email</th>
     <th>Address</th>
+    <th>Action</th>
   </tr>
   <c:forEach var="c" items="${customers}">
     <tr>

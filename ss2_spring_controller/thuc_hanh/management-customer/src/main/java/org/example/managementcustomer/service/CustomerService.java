@@ -38,4 +38,9 @@ public class CustomerService implements ICustomerService{
         c.setEmail(customer.getEmail());
         c.setAddress(customer.getAddress());
     }
+
+    @Override
+    public void delete(Long id) {
+
+    }
 }

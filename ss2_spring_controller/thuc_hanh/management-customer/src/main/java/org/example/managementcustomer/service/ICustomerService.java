@@ -10,4 +10,7 @@ public interface ICustomerService {
     Customer findById(Long id);
 
     void save(Customer customer);
+
+    void delete(Long id);
+
 }
