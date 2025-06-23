@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>Create Product</title>
+</head>
+<body class="container mt-4">
+<h3 class="text-primary mb-4">Add Product</h3>
+
+<a th:href="@{/products}" class="btn btn-secondary mb-3">Back to product list</a>
+
+<div class="card p-4 shadow-sm">
+    <form th:action="@{/products/save}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" th:field="*{name}" id="name" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" th:field="*{price}" id="price" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" th:field="*{description}" id="description" class="form-control"/>
+        </div>
+
+        <div class="mb-3">
+            <label for="manufacture" class="form-label">Manufacture</label>
+            <input type="text" th:field="*{manufacture}" id="manufacture" class="form-control"/>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
