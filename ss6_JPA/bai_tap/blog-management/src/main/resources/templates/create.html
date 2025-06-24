@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>Create</title>
+</head>
+<body class="container mt-4">
+<h3 class="text-primary mb-4">Add Blog</h3>
+
+<a th:href="@{/blogs}" class="btn btn-secondary mb-3">Back to blog list</a>
+
+<div class="card p-4 shadow-sm">
+    <form th:action="@{/blogs/save}" th:object="${blog}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" th:field="*{title}" id="title" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="summary" class="form-label">Summary</label>
+            <input type="text" th:field="*{summary}" id="summary" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <input type="text" th:field="*{content}" id="content" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="createdAt" class="form-label">Created Date</label>
+            <input type="date" th:field="*{createdAt}" id="createdAt" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="user" class="form-label">Author</label>
+            <select th:field="*{user}" id="user" class="form-select">
+                <option value="disabled selected">--Select Author--</option>
+                <option th:each="user: ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
