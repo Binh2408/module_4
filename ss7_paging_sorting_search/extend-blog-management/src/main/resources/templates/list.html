@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>List</title>
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 3em;
+        }
+
+        .card-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pagination .page-link {
+            color: #0d6efd;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body class="container mt-4">
+
+<h3 class="text-primary mb-4">Blogs List</h3>
+
+<form class="row g-2 align-items-end mb-4" action="/blogs" method="get">
+    <div class="col-md-4">
+        <label class="form-label fw-bold">Search by title</label>
+        <input type="text" name="searchName" class="form-control" placeholder="Enter title..."
+               th:value="${searchName}" />
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label fw-bold">Category</label>
+        <select name="categoryId" class="form-select">
+            <option value="">-- All categories --</option>
+            <option th:each="cate : ${categories}"
+                    th:value="${cate.id}"
+                    th:text="${cate.name}"
+                    th:selected="${cate.id == categoryId}"></option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label fw-bold">Sort by</label>
+        <select name="sortBy" class="form-select">
+            <option value="">-- Sort by date --</option>
+            <option value="newest" th:selected="${sortBy == 'newest'}">Newest first</option>
+            <option value="oldest" th:selected="${sortBy == 'oldest'}">Oldest first</option>
+        </select>
+    </div>
+
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-success">Search</button>
+    </div>
+</form>
+
+<div class="d-flex justify-content-between mb-3">
+    <a class="btn btn-primary" th:href="@{/blogs/create}">
+        <i class="bi bi-plus-circle"></i> Add new blog
+    </a>
+    <a class="btn btn-outline-secondary" th:href="@{/categories}">
+        <i class="bi bi-tags"></i> CRUD Category
+    </a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div th:if="${blogs.isEmpty()}" class="col-12">
+        <div class="alert alert-warning text-center">
+            No blog found.
+        </div>
+    </div>
+    <div class="col" th:each="row : ${blogs}">
+        <div class="card h-100 shadow-sm d-flex flex-column">
+            <img th:src="@{/images/anh_mac_dinh.jpg}" style="height: 200px; width:150px; object-fit: cover;" class="card-img-top mx-auto d-block" alt="Default Blog Image">
+
+            <div class="card-body flex-grow-1 d-flex flex-column">
+                <div class="mb-2 line-clamp-2">
+                    <h5 class="card-title text-primary mb-0" th:text="${row.title}">Blog Title</h5>
+                </div>
+                <div class="mb-2 line-clamp-2">
+                    <p class="card-text text-muted mb-0" th:text="${row.summary}">Blog summary...</p>
+                </div>
+                <div class="mt-auto">
+                    <p class="text-secondary small" th:text="'Category: ' + ${row.category.name}">Author</p>
+                    <p class="text-secondary small" th:text="'Created: ' + ${#temporals.format(row.createdAt, 'dd/MM/yyyy')}">Date</p>
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+                <a class="btn btn-info btn-sm text-white" th:href="@{/blogs/{id}/detail(id=${row.id})}">
+                    View
+                </a>
+                <a class="btn btn-warning btn-sm" th:href="@{/blogs/{id}/edit(id=${row.id})}">
+                    Edit
+                </a>
+                <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                   th:attr="data-bs-target='#deleteModal' + ${row.id}">Delete</a>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" th:id="'deleteModal' + ${row.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn xóa blog:</p>
+                        <p><strong th:text="${row.title}"></strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger" th:href="@{/blogs/{id}/delete(id=${row.id})}">Yes, Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-center mt-4">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${!blogs.hasPrevious()} ? 'disabled'">
+                <a class="page-link" th:href="@{/blogs(page=${blogs.number -1}, searchName=${searchName}, categoryId=${categoryId}, sortBy=${sortBy})}">
+                    &laquo;
+                </a>
+            </li>
+
+            <li class="page-item disabled">
+                <span class="page-link">
+                    <span th:text="${blogs.number +1}"></span> / <span th:text="${blogs.totalPages}"></span>
+                </span>
+            </li>
+
+            <li class="page-item" th:classappend="${!blogs.hasNext()} ? 'disabled'">
+                <a class="page-link" th:href="@{/blogs(page=${blogs.number +1}, searchName=${searchName}, categoryId=${categoryId}, sortBy=${sortBy})}">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Notify -->
+<div class="notify mt-3">
+    <div th:if="${success}" class="alert alert-success">
+        <span th:text="${success}"></span>
+    </div>
+</div>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
