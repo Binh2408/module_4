@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>Create</title>
+</head>
+<body class="container mt-4">
+<h3 class="text-primary mb-4">Add Category</h3>
+
+<a th:href="@{/songs}" class="btn btn-secondary mb-3">Back to songs list</a>
+
+<div class="card p-4 shadow-sm">
+    <form th:action="@{/songs/save}" th:object="${songRequestDto}" method="post">
+<!--        <input type="hidden" th:field="*{}"/>-->
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" th:field="*{name}" id="name" class="form-control"/>
+            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+        </div>
+
+        <div class="mb-3">
+            <label for="artist" class="form-label">Artist</label>
+            <input type="text" th:field="*{artist}" id="artist" class="form-control"/>
+            <small th:if="${#fields.hasErrors('artist')}" th:errors="*{artist}"></small>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" th:field="*{category}" id="category" class="form-control"/>
+            <small th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="filePath" class="form-label">File Path</label>
+            <input type="text" th:field="*{filePath}" id="filePath" class="form-control"/>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
