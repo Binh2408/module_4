@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+    <meta charset="UTF-8">
+    <title>Mã không hợp lệ</title>
+</head>
+<body class="container mt-5">
+<div class="alert alert-danger text-center p-4 shadow rounded">
+    <h3 class="text-danger">Mã mượn sách không đúng</h3>
+    <p th:text="${message}">Vui lòng kiểm tra lại mã mượn và thử lại.</p>
+    <a href="/books/return-form" class="btn btn-secondary mt-3">Thử lại</a>
+</div>
+</body>
+</html>

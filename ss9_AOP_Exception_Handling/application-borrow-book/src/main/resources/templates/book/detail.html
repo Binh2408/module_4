@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>View</title>
+</head>
+<body class="container mt-4">
+<h3 class="text-info mb-4">View Book</h3>
+
+<a th:href="@{/books}" class="btn btn-secondary mb-3">Back to book list</a>
+
+<div class="card p-4 shadow-sm">
+    <div class="mb-3">
+        <label class="form-label fw-bold">Name:</label>
+        <span th:text="${bookDetail.name}"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Detail:</label>
+        <span th:text="${bookDetail.detail}"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Quantity:</label>
+        <span th:text="${bookDetail.quantity}"></span>
+    </div>
+    <div class="mb-3">
+        <a class="btn btn-primary"
+           th:href="@{'/books/borrow/' + ${bookDetail.id}}">
+            Borrow
+        </a>
+
+    </div>
+
+</div>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

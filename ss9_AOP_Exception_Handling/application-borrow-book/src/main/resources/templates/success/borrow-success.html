@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>Borrow Success</title>
+</head>
+<body class="container mt-4">
+<h3 class="text-success mb-4">Borrow Successful</h3>
+
+<p>Your borrow code is: <strong th:text="${code}"></strong></p>
+
+<a class="btn btn-secondary" th:href="@{/books}">Back to Book List</a>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

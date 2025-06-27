@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>Return Book</title>
+</head>
+<body class="container mt-4">
+
+<h3 class="text-info mb-4">Return Book</h3>
+
+<form th:action="@{/books/return}" method="post">
+    <label for="code">Enter Borrow Code:</label>
+    <input type="text" id="code" name="code" required maxlength="5" class="form-control mb-3">
+    <p th:text="${message}"></p>
+    <button type="submit" class="btn btn-primary">Return Book</button>
+</form>
+
+<a class="btn btn-secondary mt-3" th:href="@{/books}">Back to Book List</a>
+
+</body>
+</html>
