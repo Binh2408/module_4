@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h3 class="text-primary mb-4">🛒 Giỏ Hàng Của Bạn</h3>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-secondary">
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${cartItems}">
+            <td><img th:src="${entry.key.image}" style="height: 80px;"></td>
+            <td th:text="${entry.key.name}"></td>
+            <td th:text="${#numbers.formatDecimal(entry.key.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+            <td>
+                <a th:href="@{/cart/decrease/{id}(id=${entry.key.id})}" class="btn btn-sm btn-outline-secondary">−</a>
+                <span class="mx-2" th:text="${entry.value}"></span>
+                <a th:href="@{/cart/increase/{id}(id=${entry.key.id})}" class="btn btn-sm btn-outline-secondary">+</a>
+            </td>
+            <td th:text="${#numbers.formatDecimal(entry.key.price * entry.value, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="text-end">
+        <p><strong>Tổng số lượng:</strong> <span th:text="${totalQuantity}"></span></p>
+        <p><strong>Tổng thanh toán:</strong> <span class="text-danger fw-bold"
+                                                   th:text="${#numbers.formatDecimal(totalPrice, 0, 'POINT', 0, 'COMMA')} + ' đ'"></span></p>
+    </div>
+
+    <a href="/shop" class="btn btn-outline-primary">← Tiếp tục mua sắm</a>
+</div>
+</body>
+</html>

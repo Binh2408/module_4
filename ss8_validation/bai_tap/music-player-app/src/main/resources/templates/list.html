@@ -34,7 +34,9 @@
       <a th:href="${row.filePath}" th:text="${row.filePath}" target="_blank"></a>
     </td>
     <td>
-      <a class="btn btn-warning btn-sm" th:href="@{/songs/{id}/edit(id=${row.id})}">Edit</a>
+      <a class="btn btn-warning btn-sm" th:href="@{/songs/{id}/detail(id=${row.id})}">Borrow</a>
+<!--      <a class="btn btn-warning btn-sm" th:href="@{/songs/{id}/edit(id=${row.id})}">Edit</a>-->
+
     </td>
   </tr>
 
