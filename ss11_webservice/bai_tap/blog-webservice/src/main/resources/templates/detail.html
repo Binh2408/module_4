@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>View</title>
+</head>
+<body class="container mt-4">
+<h3 class="text-info mb-4">View Blog</h3>
+
+<a th:href="@{/blogs}" class="btn btn-secondary mb-3">Back to blog list</a>
+
+<div class="card p-4 shadow-sm">
+    <div class="mb-3">
+        <label class="form-label fw-bold">Title:</label>
+        <span th:text="${blogDetail.title}"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Content:</label>
+        <span th:text="${blogDetail.content}"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Category:</label>
+        <span th:text="${blogDetail.getCategory().name}"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Author:</label>
+        <span th:text="${blogDetail.getUser().username}"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label fw-bold">Created At:</label>
+        <span th:text="${#temporals.format(blogDetail.createdAt, 'dd/MM/yyyy')}"></span>
+
+    </div>
+</div>
+
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
