@@ -68,9 +68,22 @@ public class Cart {
     public Double countTotalPayment(){
         double payment = 0;
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            payment += entry.getKey().getPrice() * (double) entry.getValue();
+            payment += (entry.getKey().getPrice() - entry.getKey().getDiscount()) * (double) entry.getValue();
         }
         return payment;
+    }
+
+    public void removeProduct(Product product){
+        Product productRemove = null;
+        for (Map.Entry<Product,Integer> entry: products.entrySet()){
+            if(entry.getKey().getId().equals(product.getId())){
+                productRemove = entry.getKey();
+                break;
+            }
+        }
+        if(productRemove != null) {
+            products.remove(productRemove);
+        }
     }
 
 }

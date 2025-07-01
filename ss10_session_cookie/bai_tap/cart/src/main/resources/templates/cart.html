@@ -15,8 +15,10 @@
             <th>Hình ảnh</th>
             <th>Tên sản phẩm</th>
             <th>Giá</th>
+            <th>Giá giảm</th>
             <th>Số lượng</th>
             <th>Thành tiền</th>
+            <th>Hành động</th>
         </tr>
         </thead>
         <tbody>
@@ -24,12 +26,16 @@
             <td><img th:src="${entry.key.image}" style="height: 80px;"></td>
             <td th:text="${entry.key.name}"></td>
             <td th:text="${#numbers.formatDecimal(entry.key.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+            <td th:text="${#numbers.formatDecimal(entry.key.discount,0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
             <td>
                 <a th:href="@{/cart/decrease/{id}(id=${entry.key.id})}" class="btn btn-sm btn-outline-secondary">−</a>
                 <span class="mx-2" th:text="${entry.value}"></span>
                 <a th:href="@{/cart/increase/{id}(id=${entry.key.id})}" class="btn btn-sm btn-outline-secondary">+</a>
             </td>
-            <td th:text="${#numbers.formatDecimal(entry.key.price * entry.value, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+            <td th:text="${#numbers.formatDecimal((entry.key.price - entry.key.discount) * entry.value, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+            <td>
+                <a th:href="@{/cart/remove/{id}(id=${entry.key.id})}" class="btn btn-sm btn-danger">Xoá</a>
+            </td>
         </tr>
         </tbody>
     </table>

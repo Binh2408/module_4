@@ -52,13 +52,35 @@
 </head>
 <body class="bg-light">
 <div class="container mt-4">
-    <div class="text-end mb-3">
-        <a href="/cart" class="btn btn-outline-primary btn-sm">
-            🛒 Giỏ hàng (<span th:text="${cart.countItemQuantity()}">0</span>)
-        </a>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded shadow-sm px-3 mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/shop">🌼 MyShop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <h4 class="text-danger fw-bold mb-4">🛍 DANH SÁCH SẢN PHẨM</h4>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" href="/shop">Trang chủ</a>
+                    <a class="nav-link" href="#">Sản phẩm</a>
+                    <a class="nav-link" href="#">Liên hệ</a>
+                    <a class="nav-link" href="#">Giới thiệu</a>
+                </div>
+
+                <div class="d-flex">
+                    <a href="/cart" class="btn btn-outline-light position-relative">
+                        🛒 Giỏ hàng
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              th:if="${cart != null}" th:text="${cart.countItemQuantity()}">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <h4 class="text-danger fw-bold mb-4">DANH SÁCH SẢN PHẨM</h4>
 
     <div class="row row-cols-1 row-cols-md-4 g-4">
         <div class="col" th:each="product : ${products}">
@@ -68,10 +90,10 @@
                     <img th:src="${product.image}" th:alt="${product.name}">
                     <h6 class="fw-bold mt-2 mb-1" th:text="${product.name}">Tên sản phẩm</h6>
                     <div>
-            <span th:if="${product.discount > 0}" class="old-price"
-                  th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></span>
+                         <span th:if="${product.discount > 0}" class="old-price"
+                               th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
                         <span class="text-danger fw-bold"
-                              th:text="${#numbers.formatDecimal(product.price - product.discount, 0, 'POINT', 0, 'COMMA')} + ' đ'"></span>
+                              th:text="${#numbers.formatDecimal(product.price - product.discount, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
                     </div>
                 </div>
             </a>

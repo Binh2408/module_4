@@ -35,17 +35,47 @@
 </head>
 <body>
 <div class="container mt-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded shadow-sm px-3 mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/shop">🌼 MyShop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" href="/shop">Trang chủ</a>
+                    <a class="nav-link" href="#">Sản phẩm</a>
+                    <a class="nav-link" href="#">Liên hệ</a>
+                    <a class="nav-link" href="#">Giới thiệu</a>
+                </div>
+
+                <div class="d-flex">
+                    <a href="/cart" class="btn btn-outline-light position-relative">
+                        🛒 Giỏ hàng
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              th:if="${cart != null}" th:text="${cart.countItemQuantity()}">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div class="row">
         <div class="col-md-4">
             <img th:src="${productDetail.image}" alt="Ảnh sản phẩm" class="product-img">
             <div class="mt-3 p-3 border text-center">
                 <div>Mã SP: <span class="text-success fw-bold" th:text="${productDetail.code}">4564</span></div>
                 <p>
-                    <span class="text-muted" style="text-decoration: line-through;"
-                        th:text="|${#numbers.formatDecimal(productDetail.price, 0, 'POINT', 3, 'COMMA')} đ|">
+                    <span class="text-muted" th:if="${productDetail.discount > 0}" style="text-decoration: line-through;"
+                        th:text="|${#numbers.formatDecimal(productDetail.price, 0, 'COMMA', 0, 'POINT')} đ|">
                     </span>
                     <span class="fw-bold text-danger"
-                          th:text="|${#numbers.formatDecimal(productDetail.price - productDetail.discount, 0, 'POINT', 3, 'COMMA')} đ|">
+                          th:text="${productDetail.discount > 0} ?
+                        ${#numbers.formatDecimal(productDetail.price - productDetail.discount, 0, 'COMMA', 0, 'POINT')} + ' đ' :
+                        ${#numbers.formatDecimal(productDetail.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">
                     </span>
                 </p>
 
