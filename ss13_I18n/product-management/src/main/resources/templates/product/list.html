@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Product Management</h2>
+  <div class="mb-3">
+    <a th:href="@{/products/create}" class="btn btn-success rounded-3 px-4">Add New Product</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped align-middle text-center shadow">
+      <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Price ($)</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Manufacturer</th>
+        <th>Created At</th>
+        <th colspan="2">Actions</th>
+      </tr>
+      </thead>
+      <tbody id="product-table">
+      <tr th:each="row,rowStat: ${productPage.content}">
+        <td th:text="${rowStat.count}"></td>
+        <td th:text="${row.name}"></td>
+        <td th:text="${row.price}"></td>
+        <td th:text="${row.description}"></td>
+        <td th:text="${row.category.name}"></td>
+        <td th:text="${row.manufacture.name}"></td>
+        <td th:text="${row.createdAt}"></td>
+        <td><a th:href="@{/products/{id}/delete(id=${row.id})}" class="btn btn-danger btn-sm rounded-3 px-3">Delete</a></td>
+        <td><a th:href="@{/products/{id}/edit(id=${row.id})}" class="btn btn-warning btn-sm rounded-3 px-3">Edit</a></td>
+      </tr>
+      </tbody>
+    </table>
+    <nav>
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!productPage.hasPrevious()} ? 'disabled'">
+          <a class="page-link" th:href="@{/products(page=${productPage.number - 1})}">Previous</a>
+        </li>
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+            th:classappend="${i == productPage.number} ? 'active'">
+          <a class="page-link" th:href="@{/products(page=${i})}" th:text="${i + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!productPage.hasNext()} ? 'disabled'">
+          <a class="page-link" th:href="@{/products(page=${productPage.number + 1})}">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="notify mt-3">
+      <div id="successMessage" th:if="${success}" class="alert alert-success rounded-3">
+        <span th:text="${success}"></span>
+      </div>
+      <div id="errorMessage" class="alert alert-danger rounded-3" th:if="${error}" th:text="${error}"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+<script>
+  window.addEventListener("DOMContentLoaded",()=> {
+    setTimeout(() => {
+      document.getElementById("successMessage").hidden = true;
+      document.getElementById("errorMessage").hidden = true;
+
+    }, 3000)
+  })
+</script>
+</html>

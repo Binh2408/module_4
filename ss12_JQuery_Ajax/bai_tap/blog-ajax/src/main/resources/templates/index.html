@@ -10,17 +10,51 @@
 <body class="bg-light">
 
 <div class="container mt-5">
-    <div class="mb-3">
-        <input id="summary" type="text" placeholder="Enter summary">
-        <input id="title" type="text" placeholder="Enter title">
-        <input id="contentB" type="text" placeholder="Enter content">
-        <input id="createdAt" type="date" placeholder="Enter createAt">
-        <select id="categorySelect" class="form-select mb-3">
-            <option value="">-- Select Category --</option>
-        </select>
-        <button id="btn-save" type="submit">Add</button>
-    </div>
     <h2 class="text-center mb-4">List Blogs</h2>
+
+<!--    button-add-->
+    <div class="mb-3 text-end">
+        <button id="btn-toggle-form-add" class="btn btn-success">Add new blog</button>
+    </div>
+<!--    form-add-->
+    <div id="blog-form-add" class="card p-4 shadow-sm mb-4 d-none">
+        <h5 class="mb-3">Add New Blog</h5>
+
+        <div class="mb-3">
+            <label for="summary" class="form-label">Summary</label>
+            <input id="summary" type="text" class="form-control" placeholder="Enter summary">
+        </div>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input id="title" type="text" class="form-control" placeholder="Enter title">
+        </div>
+
+        <div class="mb-3">
+            <label for="contentB" class="form-label">Content</label>
+            <textarea id="contentB" class="form-control" rows="4" placeholder="Enter content"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="createdAt" class="form-label">Created At</label>
+            <input id="createdAt" type="date" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="categorySelect" class="form-label">Category</label>
+            <select id="categorySelect" class="form-select">
+                <option value="">-- Select Category --</option>
+            </select>
+        </div>
+
+        <div class="text-end">
+            <button id="btn-save" type="submit" class="btn btn-primary">Save Blog</button>
+        </div>
+    </div>
+
+<!--    form-update-->
+
+
     <div class="mb-3">
         <form id="searchForm" class="d-flex">
             <input type="text" id="searchKeyword" class="form-control me-2" placeholder="Enter search by title">
@@ -39,6 +73,7 @@
                 <th>Created At</th>
                 <th>Author</th>
                 <th>Category</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody id="content">
