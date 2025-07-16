@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,33 +31,33 @@ public class ProductController {
         this.manufactureService = manufactureService;
     }
 
-    @GetMapping("")
-    public String showList(@RequestParam(defaultValue = "0") int page,
-                           @RequestParam(defaultValue = "5") int size,
-                           Model model) {
-        Pageable pageable = PageRequest.of(page,size);
-        Page<Product> productPage = productService.findAll(pageable);
-        model.addAttribute("productPage",productPage);
-        return "/product/list";
-    }
+//    @GetMapping("")
+//    public String showList(@RequestParam(defaultValue = "0") int page,
+//                           @RequestParam(defaultValue = "5") int size,
+//                           Model model) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<Product> productPage = productService.findAll(pageable);
+//        model.addAttribute("productPage", productPage);
+//        return "/product/list";
+//    }
 
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes){
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Product product = productService.findById(id);
         if (product != null) {
             productService.remove(id);
-            redirectAttributes.addFlashAttribute("success","Delete success");
+            redirectAttributes.addFlashAttribute("success", "Delete success");
         } else {
-            redirectAttributes.addFlashAttribute("error","Not found");
+            redirectAttributes.addFlashAttribute("error", "Not found");
         }
         return "redirect:/products";
     }
 
     @GetMapping("/create")
     public String showFormAdd(Model model) {
-        model.addAttribute("productDto",new ProductDto());
-        model.addAttribute("categoryList",categoryService.findAll());
-        model.addAttribute("manufactureList",manufactureService.findAll());
+        model.addAttribute("productDto", new ProductDto());
+        model.addAttribute("categoryList", categoryService.findAll());
+        model.addAttribute("manufactureList", manufactureService.findAll());
         return "/product/create";
     }
 
@@ -65,23 +66,23 @@ public class ProductController {
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes) {
         Product product = new Product();
-        new ProductDto().validate(productDto,bindingResult);
+        new ProductDto().validate(productDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return "/product/create";
         }
-        BeanUtils.copyProperties(productDto,product);
+        BeanUtils.copyProperties(productDto, product);
         productService.save(product);
-        redirectAttributes.addFlashAttribute("success","Add success");
+        redirectAttributes.addFlashAttribute("success", "Add success");
         return "redirect:/products";
     }
 
     @GetMapping("/{id}/edit")
-    public String showFormEdit(@PathVariable Long id,Model model) {
+    public String showFormEdit(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
         ProductDto productDto = new ProductDto();
-        BeanUtils.copyProperties(product,productDto);
-        model.addAttribute("productDto",productDto);
-        model.addAttribute("id",id);
+        BeanUtils.copyProperties(product, productDto);
+        model.addAttribute("productDto", productDto);
+        model.addAttribute("id", id);
         model.addAttribute("categoryList", categoryService.findAll());
         model.addAttribute("manufactureList", manufactureService.findAll());
         return "/product/update";
@@ -92,15 +93,36 @@ public class ProductController {
                          BindingResult bindingResult,
                          @PathVariable("id") Long id,
                          RedirectAttributes redirectAttributes) {
-        new ProductDto().validate(productDto,bindingResult);
-        if (bindingResult.hasErrors()){
+        new ProductDto().validate(productDto, bindingResult);
+        if (bindingResult.hasErrors()) {
             return "/product/update";
         }
         Product product = new Product();
-        BeanUtils.copyProperties(productDto,product);
+        BeanUtils.copyProperties(productDto, product);
         product.setId(id);
         productService.save(product);
-        redirectAttributes.addFlashAttribute("success","Updated success");
+        redirectAttributes.addFlashAttribute("success", "Updated success");
         return "redirect:/products";
     }
+
+    @GetMapping("")
+    public String showProductList(@RequestParam(required = false) String keyword,
+                                  @RequestParam(required = false) Long categoryId,
+                                  @RequestParam(required = false) Long manufactureId,
+                                  @PageableDefault(size = 5) Pageable pageable,
+                                  Model model) {
+
+        Page<Product> productPage = productService.searchProducts(keyword, categoryId, manufactureId, pageable);
+
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("manufactureId", manufactureId);
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("manufacturers", manufactureService.findAll());
+
+        return "product/list";
+    }
+
+
 }

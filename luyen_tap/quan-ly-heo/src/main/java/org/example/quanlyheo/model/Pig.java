@@ -1,4 +1,4 @@
-package org.example.productmanagement.model;
+package org.example.quanlyheo.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,28 +9,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Product {
+public class Pig {//heo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private double price;
-    private String description;
-    private String imageUrl;
-    private int quantity;
+    private String code;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate createdAt;
+    private LocalDate inputDate;
+    private double inputWeight;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate outputDate;
+    private double outputWeight;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "manufacture_id")
-    private Manufacture manufacture;
+    @JoinColumn(name = "origin_id")
+    private Origin origin;
 }

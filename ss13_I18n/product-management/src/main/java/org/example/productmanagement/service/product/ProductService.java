@@ -42,4 +42,13 @@ public class ProductService implements IProductService{
     public void remove(Long id) {
         productRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Product> searchProducts(String keyword, Long categoryId, Long manufactureId, Pageable pageable) {
+        String key = (keyword == null || keyword.isEmpty()) ? null : keyword;
+        Long catId = (categoryId!= null && categoryId == 0) ? null : categoryId;
+        Long manId = (manufactureId != null && manufactureId == 0) ? null : manufactureId;
+
+        return productRepository.searchProducts(key,catId,manId,pageable);
+    }
 }

@@ -12,6 +12,35 @@
   <div class="mb-3">
     <a th:href="@{/products/create}" class="btn btn-success rounded-3 px-4">Add New Product</a>
   </div>
+  <form th:action="@{/products}" method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <input type="text" name="keyword" class="form-control" placeholder="Search by name..." th:value="${keyword}">
+    </div>
+    <div class="col-md-3">
+      <select name="categoryId" class="form-select">
+        <option value="0">All Categories</option>
+        <option th:each="c : ${categories}"
+                th:value="${c.id}"
+                th:text="${c.name}"
+                th:selected="${categoryId != null and c.id == categoryId}">
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="manufactureId" class="form-select">
+        <option value="0">All Manufacturers</option>
+        <option th:each="m : ${manufacturers}"
+                th:value="${m.id}"
+                th:text="${m.name}"
+                th:selected="${manufactureId != null and m.id == manufactureId}">
+        </option>
+      </select>
+    </div>
+    <div class="col-md-2 d-grid">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
   <div class="table-responsive">
     <table class="table table-hover table-bordered table-striped align-middle text-center shadow">
       <thead class="table-dark">

@@ -27,7 +27,7 @@ public class ProductDto implements Validator {
     private Category category;
     private Manufacture manufacture;
     @Override
-    public boolean supports(Class<?> clazz) {
+    public boolean supports(Class<?> clazz)  {
         return false;
     }
 
