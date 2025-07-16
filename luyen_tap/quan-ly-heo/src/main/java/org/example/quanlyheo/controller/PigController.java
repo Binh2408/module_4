@@ -6,11 +6,14 @@ import org.example.quanlyheo.service.IPigService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/pigs")
@@ -23,21 +26,41 @@ public class PigController {
         this.pigService = pigService;
     }
 
-    @GetMapping("")
-    public String showList(@RequestParam(required = false, defaultValue = "0") int page,
-                           @RequestParam(required = false,defaultValue = "5") int size,
-                           @RequestParam(required = false) String code,
-                           @RequestParam(required = false) Boolean status,
-                           @RequestParam(required = false) Long originId,
-                           Model model) {
-        Pageable pageable = PageRequest.of(page,size);
-        model.addAttribute("pigs", pigService.search(code, status, originId, pageable));
-        model.addAttribute("origins", originService.findAll());
-        model.addAttribute("originId",originId);
-        model.addAttribute("code",code);
-        model.addAttribute("status",status);
-        return "pig/list";
-    }
+//    @GetMapping("")
+//    public String showList(@RequestParam(required = false, defaultValue = "0") int page,
+//                           @RequestParam(required = false,defaultValue = "5") int size,
+//                           @RequestParam(required = false) String code,
+//                           @RequestParam(required = false) Boolean status,
+//                           @RequestParam(required = false) Long originId,
+//                           Model model) {
+//        Pageable pageable = PageRequest.of(page,size);
+//        model.addAttribute("pigs", pigService.search(code, status, originId, pageable));
+//        model.addAttribute("origins", originService.findAll());
+//        model.addAttribute("originId",originId);
+//        model.addAttribute("code",code);
+//        model.addAttribute("status",status);
+//        return "pig/list";
+//    }
+@GetMapping("")
+public String showPigList(@RequestParam(required = false, defaultValue = "0") int page,
+                          @RequestParam(required = false, defaultValue = "5") int size,
+                          @RequestParam(required = false) String code,
+                          @RequestParam(required = false) Boolean status,
+                          @RequestParam(required = false) Long originId,
+                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startInputDate,
+                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endInputDate,
+                          Model model) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Pig> pigs = pigService.search(code, status, originId, startInputDate, endInputDate, pageable);
+
+    model.addAttribute("pigs", pigs);
+    model.addAttribute("code", code);
+    model.addAttribute("status", status);
+    model.addAttribute("originId", originId);
+    model.addAttribute("startInputDate", startInputDate);
+    model.addAttribute("endInputDate", endInputDate);
+    return "pig/list";
+}
 
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes){

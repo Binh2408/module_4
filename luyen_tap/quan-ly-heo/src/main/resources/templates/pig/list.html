@@ -37,7 +37,15 @@
             <option value="false" th:selected="${status == false}">Chưa bán</option>
         </select>
     </div>
-
+    <div class="col-auto">
+        <label for="startInputDate">Từ ngày nhập:</label>
+        <input id="startInputDate" type="date" class="form-control" name="startInputDate" th:value="${startInputDate}">
+    </div>
+    <div class="col-auto">
+        <label for="endInputDate">Đến ngày nhập:</label>
+        <input id="endInputDate" type="date" class="form-control" name="endInputDate" th:value="${endInputDate}">
+    </div>
+    
     <div class="col-md-3 d-flex align-items-end">
         <button type="submit" class="btn btn-primary me-2">Tìm kiếm</button>
         <a th:href="@{/pigs}" class="btn btn-secondary">Xóa lọc</a>

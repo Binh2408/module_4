@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class PigService implements IPigService {
     private IPigRepository pigRepository;
@@ -38,9 +40,14 @@ public class PigService implements IPigService {
     }
 
     @Override
-    public Page<Pig> search(String code, Boolean status, Long originId, Pageable pageable) {
-        return pigRepository.search(code,status,originId,pageable);
+    public Page<Pig> search(String code, Boolean status, Long originId, LocalDate startInputDate, LocalDate endInputDate, Pageable pageable) {
+        return pigRepository.search(code,status,originId,startInputDate,endInputDate,pageable);
     }
+
+//    @Override
+//    public Page<Pig> search(String code, Boolean status, Long originId, Pageable pageable) {
+//        return pigRepository.search(code,status,originId,pageable);
+//    }
 
     @Override
     public Page<Pig> getTopExportedPigs(Pageable pageable) {
