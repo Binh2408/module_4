@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Danh sách</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+<h3>Danh sách giao dịch nhà đất</h3>
+<form method="get" th:action="@{/transactions/search}" class="row g-3 mb-4">
+
+    <div class="col-md-3">
+        <select name="categoryId" class="form-select">
+            <option value="">-- Chọn loại bất động sản --</option>
+            <option th:each="categorie : ${categories}"
+                    th:value="${categorie.id}"
+                    th:selected="${categoryId} == ${categorie.id}"
+                    th:text="${categorie.name}"></option>
+        </select>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary me-2">Tìm kiếm</button>
+        <a th:href="@{/transactions}" class="btn btn-secondary">Xóa lọc</a>
+    </div>
+</form>
+
+<div class="d-flex justify-content-between mb-3">
+    <a class="btn btn-primary" th:href="@{/transactions/create}">
+        <i class="bi bi-plus-circle"></i> Thêm mới
+    </a>
+</div>
+<table class="table table-bordered align-middle text-center table-hover shadow-sm">
+    <thead class="table-success">
+    <tr>
+        <th scope="col">Mã giao dịch</th>
+        <th scope="col">Tên khách hàng</th>
+        <th scope="col">Ngày giao dịch</th>
+        <th scope="col">Loại dịch vụ</th>
+        <th scope="col">Đơn gián(VND/m2)</th>
+        <th scope="col">Diện tích(m2)</th>
+        <th scope="col">Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat: ${transactionInfo}">
+        <td th:text="${row.code}"></td>
+        <td th:text="${row.customer.name}"></td>
+        <td th:text="${#temporals.format(row.createAt,'dd-MM-yyyy')}"></td>
+        <td th:text="${row.category.name}"></td>
+        <td th:text="${row.price}"></td>
+        <td th:text="${row.area}"></td>
+        <td>
+            <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal"
+               th:attr="data-bs-target='#detailModal' + ${row.id}">Xem</a>
+            <div class="modal fade" th:id="'detailModal' + ${row.id}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title">Chi tiết giao dịch</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-start">
+                            <p><strong>Mã giao dịch: </strong><span th:text="${row.code}"></span></p>
+                            <p><strong>Loại bất động sản: </strong><span th:text="${row.category.name}"></span></p>
+                            <p><strong>Ngày giao dịch: </strong><span th:text="${#temporals.format(row.createAt,'dd-MM-yyyy')}"></span></p>
+                            <p><strong>Đơn giá(VND/m2): </strong><span th:text="${row.price}"></span></p>
+                            <p><strong>Diện tích: </strong><span th:text="${row.area}"></span></p>
+                            <p><strong>Tên khách hàng: </strong><span th:text="${row.customer.name}"></span></p>
+                            <p><strong>Số điện thoại: </strong><span th:text="${row.customer.phone}"></span></p>
+                            <p><strong>Email: </strong><span th:text="${row.customer.email}"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+               th:attr="data-bs-target='#deleteModal' + ${row.id}">Xóa</a>
+            <!-- Modal xác nhận xóa -->
+            <div class="modal fade" th:id="'deleteModal' + ${row.id}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger">Xác nhận xóa </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bạn có chắc chắn muốn xóa giao dịch này không?</p>
+                            <p><strong th:text="${row.code}"></strong></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <a class="btn btn-danger"
+                               th:href="@{/transactions/{id}/delete(id=${row.id})}">Có</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

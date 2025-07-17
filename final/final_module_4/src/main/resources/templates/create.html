@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Tạo giao dịch</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script></head>
+<body class="container mt-4">
+<h3 class="text-primary mb-4">Thêm mới giao dịch</h3>
+
+<a th:href="@{/transactions}" class="btn btn-secondary mb-3">Quay lại danh sách giao dịch</a>
+
+<div class="card p-4 shadow-sm">
+    <form th:action="@{/transactions/save}" th:object="${transactionInfoDto}" method="post">
+<!--        <input type="hidden" th:field="*{id}"/>-->
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Mã giao dịch</label>
+            <input type="text" th:field="*{code}" id="title" class="form-control" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="customer" class="form-label">Tên khách hàng</label>
+            <select th:field="*{customer}" id="customer" class="form-select" required>
+                <option value="" disabled selected>--Select Category--</option>
+                <option th:each="customer: ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Loại bất động sản</label>
+            <select th:field="*{category}" id="category" class="form-select" required>
+                <option value="" disabled selected>--Select Category--</option>
+                <option th:each="category: ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="createdAt" class="form-label">Ngày giao dịch:</label>
+            <input type="date" th:field="*{createAt}" id="createdAt" class="form-control" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Đơn giá (VND):</label>
+            <input type="number" th:field="*{price}" id="price" class="form-control" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="area" class="form-label">Diện tích(m2):</label>
+            <input type="number" th:field="*{area}" id="area" class="form-control" required/>
+            <div class="text-danger" th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a th:href="@{/transactions}" class="btn btn-secondary">Hủy</a>
+
+    </form>
+</div>
+
+</body>
+</html>
